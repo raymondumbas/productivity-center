@@ -4,4 +4,4 @@ React-based Web App to keep track of habits and goals.
 
 # Current State
 Initial Design for the home page (nothing implemented yet):
-![image](./design/wireframes/first-homepage-design.png)
+![image](./productivity-center/design/wireframes/first-homepage-design.png)
