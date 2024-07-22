@@ -2,15 +2,15 @@ import { useState } from 'react'
 import './App.css'
 import Button from './Button.jsx'
 import NewHabitCard from './NewHabitCard.jsx'
+import TimeClockCard from './TimeClockCard.jsx'
 
 export default function App() {
   const[page, setPage] = useState("home");
- 
   // Home Page
   if(page == "home"){
     return (
       <>
-        <NewHabitCard/>
+        <TimeClockCard/>
       </>
     )
   }
