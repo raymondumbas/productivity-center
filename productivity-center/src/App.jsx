@@ -10,6 +10,7 @@ export default function App() {
   if(page == "home"){
     return (
       <>
+        <NewHabitCard/>
         <TimeClockCard/>
       </>
     )
@@ -34,7 +35,8 @@ export default function App() {
   //Goals Page
   if(page == "goals"){
     return (
-      <Button onclick ={() => setPage("home")} text = "Change to home"/>
+      <>
+      </>
     )
   }
 

@@ -1,9 +1,10 @@
 import { forwardRef } from "react";
+import { useState } from "react";
 
 /* INPUT FIELD COMPONENT
     Props:
     - name (string) = text label for the input
-    -type (string) = what type of input
+    - type (string) = what type of input
 
     Ref:
     - passed from parent to retrieve value of the field
@@ -11,12 +12,23 @@ import { forwardRef } from "react";
 
 
 const InputField = forwardRef(function InputField(props,ref) {
-
+    const [value, setValue] = useState(props.default || "");
     const handleChange = (e) => {
-        if (props.type === "checkbox") {
-            ref.current.checked = e.target.checked;
-        } else {
-            ref.current.value = e.target.value;
+        console.log(e.target.value)
+        if(ref){
+            if (props.type === "checkbox") {
+                ref.current.checked = e.target.checked;
+            } else {
+                ref.current.value = e.target.value;
+            }
+        }
+        else{ 
+            if(props.stateSetter){
+
+                props.stateSetter(e.target.value);
+                setValue(e.target.value);
+
+            }
         }
     };
 
@@ -25,17 +37,35 @@ const InputField = forwardRef(function InputField(props,ref) {
         return(
             <>
                 <label htmlFor = {props.name}>{props.name}</label>
-                <textarea name = {props.name} id = {props.name} onChange = {handleChange} ref = {ref} ></textarea>
+                <textarea name = {props.name} id = {props.name} onChange = {handleChange} ref = {ref} value = {props.default} ></textarea>
             </>
         )
 
     }
+    //Select
+    else if(props.type == "select"){
+        const selectOptions = props.options.map((habit, index) => (
+            <option value={habit} key={index}>
+                {habit}
+            </option>
+        ));
+
+        selectOptions.unshift(<option value = "" key = "" defaultValue>Select a habit</option>)
+        
+        return (
+            <>
+                <label htmlFor = {props.name}>{props.name}</label>
+                <select type = {props.type} name = {props.name} id = {props.name} onChange = {handleChange} ref = {ref} value = {value}>{selectOptions}</select>
+            </>
+        )
+    }
+
     //Input
     else{
         return (
             <>
                 <label htmlFor = {props.name}>{props.name}</label>
-                <input type = {props.type} name = {props.name} id = {props.name} onChange = {handleChange} ref = {ref}></input>
+                <input type = {props.type} name = {props.name} id = {props.name} onChange = {handleChange} ref = {ref} value = {props.default} ></input>
             </>
         )
     }

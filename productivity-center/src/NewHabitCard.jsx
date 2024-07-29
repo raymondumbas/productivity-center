@@ -31,9 +31,11 @@ export default function NewHabitCard(props) {
             let newHabit = {
                 "name": name,
                 "metric": metric,
-                "description": description
+                "description": description,
+                "log": (metric ? [] : 0 ) //Time = list of times, Count = number
             };
             localStorage.setItem(name, JSON.stringify(newHabit)); //Create new habit item
+
             console.log("New Habit Created:", newHabit)
         }
     }
