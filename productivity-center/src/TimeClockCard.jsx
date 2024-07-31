@@ -5,75 +5,115 @@ import Button from './Button.jsx'
 import OutputDisplay from './OutputDisplay.jsx'
 import InputField from './InputField.jsx'
 
-export default function TimeClockCard(){
+export default function TimeClockCard(props){
     //----------------Variables----------------
     let habitList = JSON.parse(localStorage.getItem("habitList"))
 
      //----------------Hooks----------------
-    const [metric, setMetric] = useState("time");
     const [description, setDescription] = useState("");
     const [habitSelect, setHabitSelect] = useState("");
     const [clock, setClock] = useState("");
     const [count, setCount] = useState(0);
+    const [habitState, setHabitState] = useState("noHabitSelected");
 
+
+    // Get current habit
     useEffect(() => {
         if(habitSelect){
-
-            //Get habit from local storage
+ 
+            // Get habit from local storage
             let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
 
             console.log("new currentHabit:",currentHabit);
-            //Set information
-            setMetric(currentHabit.metric ? "time" : "count");
-            setDescription(currentHabit.description);
+
+            // Habit is count-based
+            if(!currentHabit.metric){
+
+                setHabitState("countHabit");
+
+            }
+
+            // Habit is time-based
+            else{
+
+                // Habit has existing logs
+                if(!currentHabit.log.length===0){
+
+                    const latestLog = currentHabit.log[0];
+                    // Habit has an active log (i.e. has no end time)
+                    if(latestLog.length === 1){
+                        
+                        setHabitState("timeHabitActive");
+
+                    }
+
+                    // Habit does not have an active log 
+                    //(i.e. latest log has start AND end time)
+                    else if(latestLog.length === 2){
+
+                        setHabitState("timeHabitInactive");
+
+                    }
+
+                }
+
+                // Habit has no logs
+                else{
+
+                    //No current habits
+                    setHabitState("timeHabitInactive");
+
+                }
+            }
         }
       }, [habitSelect]);
     
+    // Setup current state
     useEffect( () => {
+        if(habitSelect){
 
-        let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
-            console.log("metric set:",metric);
-            //If time habit -> setup clock
-            if(metric == "time"){
+            // Get Selected Habit from Local Storage
+            let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
 
-                //Current habit already has logs
-                if(!currentHabit.log.length===0){
-                    
-                    //Get most recent habit (first in list)
-                    const currentLog = currentHabit.log[0];
 
-                    //Current log not finished
-                    if(currentLog.length === 1){
+            switch (habitState){
+                case "countHabit":
 
-                        let startDate = currentLog[0]; //Time listed in the log
-                        let currentDate = new Date(); //right now
-                        let timePassed = (currentDate.getTime() - startDate.getTime())/1000;
-                        setClock(timePassed)
-                    }
+                    setCount(currentHabit.log);
 
-                    //Current log is finished
-                    else{
+                break;
 
-                        setClock("0");
+                case "timeHabitInactive":
 
-                    }
-                }
+                    setClock("0.00");
 
-                //Current habit has not logs
-                else{
+                break;
 
-                    setClock("0");
+                case "timeHabitActive":
+                
+                    let startDate = new Date(currentHabit.log[0][0]); //Time listed in the log
+                    console.log(startDate);
+                    let currentDate = new Date(); //right now
+                    let timePassed = (currentDate.getTime() - startDate.getTime())/1000;
+                    setClock(timePassed)
 
-                }
+                break;
             }
 
-            else if(metric == "count"){
-                setCount(currentHabit.log);
-                console.log("IN COUNT SETUP, COUNT = ",count)
-            }
+            setDescription(currentHabit.description);
             console.log('habit retrieved:',currentHabit)
-    }, [metric, habitSelect]);
+            console.log("habit state:",habitState)
+        }
+    }, [habitState, habitSelect]);
+
+
     //----------------Functions----------------
+
+    /**
+      * Update the count from current habit
+      * 
+      * Pre-reqs: Habit must be count-based
+     */
     const updateCount = () =>{
         let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
         
@@ -83,89 +123,140 @@ export default function TimeClockCard(){
             ... currentHabit,
             "log": newCount
         }
+
+        console.log(currentHabit)
         localStorage.setItem(habitSelect, JSON.stringify(updatedHabit));
 
     };
 
+    /**
+     * Create a new log for the current habit
+     * 
+     * Pre-reqs: 
+     * - Habit must be time-based
+     * - Habit must not have an active log (i.e. all logs must have a start and end time)
+     */
     const startTime = () =>{
         let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
+      
+        if(habitState == "timeHabitInactive"){
+            console.log("HERE")
+            // Get current time to start habit
+            let currentTime = new Date();
 
-        //Current Habit has logs
-        if(!currentHabit.log.length===0){
+            //Update log
+            const updatedLog = currentHabit.log
+            updatedLog.unshift([currentTime])
+            console.log(updatedLog);
 
+            // Create updated habit with the current time
+            const updatedHabit = {
+                ...currentHabit,
+                "log": updatedLog
+            };
+
+            // Update localStorage with updated habit
+            localStorage.setItem(habitSelect, JSON.stringify(updatedHabit));
+
+            // Habit is now active
+            setHabitState("timeHabitActive");
         }
+    }
+   
 
-        //Current Habit has no logs
-        else{
-
-            //Create log starting from right now
-            const newLog = [new Date()];
-
-            //Add new log to 
-        }
-    };
-
+    /**
+     * Update active log from current habit with an end time
+     * 
+     * Pre-reqs: 
+     * - Habit must be time-based
+     * - Habit must have an active log (i.e. latest log is missing an end time)
+     */
     const stopTime = () => {
         let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
-        let habitLogs = currentHabit.log
+        let habitLogs = currentHabit.log;
 
-        //Current Habit has logs
-        if(!habitLogs.length===0){
+        if(habitState == "timeHabitActive"){
 
             let currentLog = habitLogs[0];
-            
-            //Latest log is still active
-            if(currentLog.length === 1){
 
-                //Update current log with current time as end time
-                currentLog.push(new Date());
+            // Update current log with current time as end time
+            currentLog.push(new Date());
 
-                //Update habit with the updated logs
-                habitLogs[0] = currentLog;
-                const updatedHabit = {
-                    ...currentHabit,
-                    "log": habitLogs
-                }
-
-                //Update habit logs in localStorage
-                localStorage.setItem(habitSelect, updatedHabit)
+            // Update habit with the updated logs
+            habitLogs[0] = currentLog;
+            const updatedHabit = {
+                ...currentHabit,
+                "log": habitLogs
             }
+
+            // Update habit logs in localStorage
+            localStorage.setItem(habitSelect, JSON.stringify(updatedHabit))
+
+            // Habit is now not active
+            setHabitState("timeHabitInactive");
         }
     }
-    /*
-        const today = new Date();
-        let h = today.getHours();
-        let m = today.getMinutes();
-        let s = today.getSeconds();
-        setTimeout(startTime, 1000);
-    */
-      
+
+    /**
+     * Update clock of current habit
+     * 
+     * Pre-reqs: 
+     * - Habit must be time-based
+     * - Habit must have an active log (i.e. latest log is missing an end time)
+     */
+    const updateTime = () =>{
+
+        let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
+
+        let startDate = new Date(currentHabit.log[0][0]); //Time listed in the log
+        console.log(startDate);
+        let currentDate = new Date(); //right now
+        let timePassed = (currentDate.getTime() - startDate.getTime())/1000;
+        setClock(timePassed)
+    }
 
     //----------------Return Statements----------------
-    if(metric == "time"){
-        return( 
-            <>  
-                <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
-                <OutputDisplay text = {clock} />
-                <Button text = "Start"/>
-                <Button text = "Stop"/>
-                <OutputDisplay text = {description}/>
-            </>
-        )
-    }
+    switch(habitState){
+        case "noHabitSelected":
+            return( 
+                <>  
+                    <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
+                </>
+            )
+        
+        case "countHabit":
 
-    if(metric == "count"){
-        let today = new Date();
-        let currentDate = today.toLocaleDateString();
-        return( 
-            <>  
-                <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
-                <OutputDisplay text = {currentDate} />
-                <OutputDisplay text = {count}/>
-                <Button text = "Done" onclick = {updateCount}/>
-                <OutputDisplay text = {description}/>
-            </>
-        ) 
-    }
+            const currentDate = new Date().toDateString();
 
+            return( 
+                <>  
+                    <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
+                    <OutputDisplay text = {currentDate} />
+                    <OutputDisplay text = {count}/>
+                    <Button text = "Done" onclick = {updateCount}/>
+                    <OutputDisplay text = {description}/>
+                </>
+            ) 
+        
+        case "timeHabitInactive":
+            return(
+                <>
+                    <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
+                    <OutputDisplay text = {clock} />
+                    <Button text = "Start" onclick = {startTime} />
+                    <OutputDisplay text = {description}/>
+                </>
+            )
+        
+        case "timeHabitActive":
+            return( 
+                <>  
+                    <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
+                    <OutputDisplay text = {clock} />
+                    <Button text = "Update" onclick = {updateTime} />
+                    <Button text = "Stop" onclick = {stopTime}/>
+                    <OutputDisplay text = {description}/>
+                </>
+            ) 
+    }
 }
