@@ -37,11 +37,14 @@ export default function NewHabitCard(props) {
             localStorage.setItem(name, JSON.stringify(newHabit)); //Create new habit item
 
             console.log("New Habit Created:", newHabit)
-            props.setUpdate("New Habit")
 
             habitNameRef.current.value = "";
             metricRef.current.checked = false;
             descriptionRef.current.value = "";
+
+            props.setPage(props.prevPage);
+            props.setPrevPage("newHabit");
+            
         }
     }
 

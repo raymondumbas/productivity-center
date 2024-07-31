@@ -104,6 +104,9 @@ export default function TimeClockCard(props){
             console.log('habit retrieved:',currentHabit)
             console.log("habit state:",habitState)
         }
+        else{
+           setHabitState("noHabitSelected")
+        }
     }, [habitState, habitSelect]);
 
 
@@ -215,11 +218,25 @@ export default function TimeClockCard(props){
         setClock(timePassed)
     }
 
+    /**
+     * Bring up New Habit Card from Time Clock
+     * 
+     * Pre-reqs: 
+     *  n/a
+     */
+
+    const showNewHabit = () =>{
+
+        props.setPrevPage("timeClock");
+        props.setPage("newHabit")
+
+    }
     //----------------Return Statements----------------
     switch(habitState){
         case "noHabitSelected":
             return( 
                 <>  
+                    <Button text = "+" onclick = {showNewHabit} />
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
                 </>
             )
@@ -230,6 +247,7 @@ export default function TimeClockCard(props){
 
             return( 
                 <>  
+                    <Button text = "+" onclick = {showNewHabit} />
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
                     <OutputDisplay text = {currentDate} />
                     <OutputDisplay text = {count}/>
@@ -241,6 +259,7 @@ export default function TimeClockCard(props){
         case "timeHabitInactive":
             return(
                 <>
+                    <Button text = "+" onclick = {showNewHabit} />
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
                     <OutputDisplay text = {clock} />
                     <Button text = "Start" onclick = {startTime} />
@@ -251,6 +270,7 @@ export default function TimeClockCard(props){
         case "timeHabitActive":
             return( 
                 <>  
+                    <Button text = "+" onclick = {showNewHabit} />
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
                     <OutputDisplay text = {clock} />
                     <Button text = "Update" onclick = {updateTime} />
