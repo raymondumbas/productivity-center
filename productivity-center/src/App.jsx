@@ -6,12 +6,13 @@ import TimeClockCard from './TimeClockCard.jsx'
 
 export default function App() {
   const[page, setPage] = useState("home");
+  const[update, setUpdate] = useState("");
   // Home Page
   if(page == "home"){
     return (
       <>
-        <NewHabitCard/>
-        <TimeClockCard/>
+        <NewHabitCard update = "update" setUpdate = {setUpdate}/>
+        <TimeClockCard update = "update" setUpdate = {setUpdate}/>
       </>
     )
   }
