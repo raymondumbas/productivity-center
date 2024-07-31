@@ -6,22 +6,34 @@ import TimeClockCard from './TimeClockCard.jsx'
 
 export default function App() {
   const[page, setPage] = useState("home");
-  const[update, setUpdate] = useState("");
+  const[prevPage, setPrevPage] = useState("");
+
+  console.log("Current Page:",page);
+  console.log("Previous Page:",prevPage);
   // Home Page
   if(page == "home"){
     return (
       <>
-        <NewHabitCard update = "update" setUpdate = {setUpdate}/>
-        <TimeClockCard update = "update" setUpdate = {setUpdate}/>
+        <TimeClockCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
       </>
     )
   }
 
-  //Time Clock Page
-  if(page == "clock"){
+  // Time Clock Page
+  if(page == "timeClock"){
     return (
      <>
+        <TimeClockCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
      </>
+    )
+  }
+
+  // New Habit Page
+  if(page == "newHabit"){
+    return(
+      <>
+        <NewHabitCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+      </>
     )
   }
 
