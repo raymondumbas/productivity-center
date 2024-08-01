@@ -3,6 +3,7 @@ import './App.css'
 import Button from './Button.jsx'
 import NewHabitCard from './NewHabitCard.jsx'
 import TimeClockCard from './TimeClockCard.jsx'
+import HabitListCard from './HabitListCard.jsx'
 
 export default function App() {
   const[page, setPage] = useState("home");
@@ -15,6 +16,7 @@ export default function App() {
     return (
       <>
         <TimeClockCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+        <HabitListCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
       </>
     )
   }
