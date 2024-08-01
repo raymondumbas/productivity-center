@@ -26,20 +26,32 @@ export default function TimeClockCard(props){
 
             console.log("new currentHabit:",currentHabit);
 
-            // Habit is count-based
-            if(!currentHabit.metric){
+            // Habit has existing logs
+            if(!currentHabit.log.length===0){
+                
+                const latestLog = currentHabit.log[0];
 
-                setHabitState("countHabit");
 
-            }
+                if(currentHabit.metric == "count"){
+                    const latestHabitDate = latestLog[0];
+                    const todayDate =  new Date().toDateString();
 
-            // Habit is time-based
-            else{
+                    // Count for today already exists
+                    if(latestHabitDate == todayDate){
 
-                // Habit has existing logs
-                if(!currentHabit.log.length===0){
+                        setHabitState("countHabitActive");
+                    }
 
-                    const latestLog = currentHabit.log[0];
+                    // No count for today yet
+                    else{
+
+                        setHabitState("countHabitInactive");
+
+                    }
+                }
+
+                else if (currentHabit.metric == "time" ){
+
                     // Habit has an active log (i.e. has no end time)
                     if(latestLog.length === 1){
                         
@@ -56,15 +68,14 @@ export default function TimeClockCard(props){
                     }
 
                 }
-
-                // Habit has no logs
-                else{
-
-                    //No current habits
-                    setHabitState("timeHabitInactive");
-
-                }
+            
             }
+
+            // No existing logs
+            else{
+                setHabitState(currentHabit.metric + "HabitInactive")
+            }
+
         }
       }, [habitSelect]);
     
@@ -77,12 +88,17 @@ export default function TimeClockCard(props){
 
 
             switch (habitState){
-                case "countHabit":
+                case "countHabitActive":
 
-                    setCount(currentHabit.log);
+                    setCount(currentHabit.log[0][1]);
 
                 break;
 
+                case "countHabitInactive":
+
+                    setCount(0);
+
+                break;
                 case "timeHabitInactive":
 
                     setClock("0.00");
@@ -120,15 +136,36 @@ export default function TimeClockCard(props){
     const updateCount = () =>{
         let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
         
-        const newCount = Number(count) + 1;
-        setCount(newCount);
-        const updatedHabit = {
-            ... currentHabit,
-            "log": newCount
+        // No logs for today yet
+        if(habitState == "countHabitInactive"){
+
+            // Create count log for today
+            const addedTodayLog = currentHabit.log
+            const today = new Date();
+
+            addedTodayLog.unshift([today.toDateString(),0]);
+
+            currentHabit = {
+                ... currentHabit,
+                "log": addedTodayLog
+            }
+
+            setHabitState("countHabitActive");
         }
 
+        // Update count
+        const newCount = Number(count) + 1;
+        setCount(newCount);
+
+        // Update count in log
+        currentHabit.log[0][1] = newCount;
+
+        //Update total in habit
+        const  currentTotal =  Number(currentHabit.total);
+        currentHabit.total = currentTotal + 1;
+
         console.log(currentHabit)
-        localStorage.setItem(habitSelect, JSON.stringify(updatedHabit));
+        localStorage.setItem(habitSelect, JSON.stringify(currentHabit));
 
     };
 
@@ -181,18 +218,30 @@ export default function TimeClockCard(props){
         if(habitState == "timeHabitActive"){
 
             let currentLog = habitLogs[0];
-
+            const endTime = new Date();
             // Update current log with current time as end time
-            currentLog.push(new Date());
+            currentLog.push(endTime);
 
-            // Update habit with the updated logs
+            // Update log with new latest log
             habitLogs[0] = currentLog;
+
+            // Increment total time
+            const startTime = new Date(currentLog[0]);
+
+            // Calculate new addition in time
+            const finalTime = (endTime.getTime() - startTime.getTime())/1000;
+            const oldTotal = currentHabit.total;
+
+            // Update total in habit
+            currentHabit.total = oldTotal + finalTime;
+
+            // Update logs in habit
             const updatedHabit = {
                 ...currentHabit,
                 "log": habitLogs
             }
 
-            // Update habit logs in localStorage
+            // Update habit in localStorage
             localStorage.setItem(habitSelect, JSON.stringify(updatedHabit))
 
             // Habit is now not active
@@ -241,7 +290,8 @@ export default function TimeClockCard(props){
                 </>
             )
         
-        case "countHabit":
+        case "countHabitActive":
+        case "countHabitInactive":
 
             const currentDate = new Date().toDateString();
 
@@ -251,8 +301,9 @@ export default function TimeClockCard(props){
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
                     <OutputDisplay text = {currentDate} />
                     <OutputDisplay text = {count}/>
-                    <Button text = "Done" onclick = {updateCount}/>
                     <OutputDisplay text = {description}/>
+                    <Button text = "Done" onclick = {updateCount}/>
+
                 </>
             ) 
         
@@ -262,8 +313,8 @@ export default function TimeClockCard(props){
                     <Button text = "+" onclick = {showNewHabit} />
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
                     <OutputDisplay text = {clock} />
-                    <Button text = "Start" onclick = {startTime} />
                     <OutputDisplay text = {description}/>
+                    <Button text = "Start" onclick = {startTime} />
                 </>
             )
         
@@ -273,9 +324,9 @@ export default function TimeClockCard(props){
                     <Button text = "+" onclick = {showNewHabit} />
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
                     <OutputDisplay text = {clock} />
+                    <OutputDisplay text = {description}/>
                     <Button text = "Update" onclick = {updateTime} />
                     <Button text = "Stop" onclick = {stopTime}/>
-                    <OutputDisplay text = {description}/>
                 </>
             ) 
     }

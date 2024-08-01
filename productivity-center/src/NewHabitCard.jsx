@@ -30,9 +30,10 @@ export default function NewHabitCard(props) {
             localStorage.setItem("habitList", JSON.stringify(habitList)); //Add habitName to habitList
             let newHabit = {
                 "name": name,
-                "metric": metric,
+                "metric": (metric ? "time" : "count"),
                 "description": description,
-                "log": (metric ? [] : 0 ) //Time = list of times, Count = number
+                "log": [], //Time = [startTime, endTime], Count = [date, count]
+                "total": 0
             };
             localStorage.setItem(name, JSON.stringify(newHabit)); //Create new habit item
 
@@ -53,7 +54,7 @@ export default function NewHabitCard(props) {
         <>
             Create New Habit <br></br>
             <InputField name = "Habit Name:" type = "text" ref = {habitNameRef}/>
-            <InputField name = "Metric" type = "checkbox" ref = {metricRef}/><br></br>
+            <InputField name = "Timed?" type = "checkbox" ref = {metricRef}/><br></br>
             <InputField name = "Description" type = "textarea" ref = {descriptionRef}/>
             <Button text = "+" onclick = {createNewHabit}/>
         </>
