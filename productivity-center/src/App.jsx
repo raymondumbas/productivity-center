@@ -38,7 +38,6 @@ export default function App() {
     return (
       <>
         <NavBar prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
-        <h1>Your Habits</h1>
         <HabitListCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
       </>
     )
