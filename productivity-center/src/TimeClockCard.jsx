@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import {useEffect} from 'react'
-import { useRef } from 'react'
 import Button from './Button.jsx'
 import OutputDisplay from './OutputDisplay.jsx'
 import InputField from './InputField.jsx'
@@ -25,17 +24,16 @@ export default function TimeClockCard(props){
             let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
 
             console.log("new currentHabit:",currentHabit);
-
             // Habit has existing logs
-            if(!currentHabit.log.length===0){
+            if(!(currentHabit.log.length===0)){
                 
                 const latestLog = currentHabit.log[0];
-
 
                 if(currentHabit.metric == "count"){
                     const latestHabitDate = latestLog[0];
                     const todayDate =  new Date().toDateString();
 
+ 
                     // Count for today already exists
                     if(latestHabitDate == todayDate){
 
@@ -73,6 +71,7 @@ export default function TimeClockCard(props){
 
             // No existing logs
             else{
+                
                 setHabitState(currentHabit.metric + "HabitInactive")
             }
 
