@@ -179,7 +179,6 @@ export default function TimeClockCard(props){
         let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
       
         if(habitState == "timeHabitInactive"){
-            console.log("HERE")
             // Get current time to start habit
             let currentTime = new Date();
 
@@ -218,11 +217,10 @@ export default function TimeClockCard(props){
 
             let currentLog = habitLogs[0];
             const endTime = new Date();
+            const todaysDate = endTime.toDateString();
+
             // Update current log with current time as end time
             currentLog.push(endTime);
-
-            // Update log with new latest log
-            habitLogs[0] = currentLog;
 
             // Increment total time
             const startTime = new Date(currentLog[0]);
@@ -230,6 +228,35 @@ export default function TimeClockCard(props){
             // Calculate new addition in time
             const finalTime = (endTime.getTime() - startTime.getTime())/1000;
             const oldTotal = currentHabit.total;
+
+            // Update today's total
+            const habitDays = JSON.parse(localStorage.getItem(habitSelect+"Days"));
+
+            //Today's total already exists
+            if (todaysDate in habitDays){
+
+                // Previous total time for today
+                const oldDayTime = habitDays[todaysDate];
+
+                // Update with new total
+                habitDays[todaysDate] = oldDayTime + finalTime;
+            }
+            // Today's total has not been started
+            else{
+
+                // Create new key with today's date
+                habitDays[todaysDate] = finalTime;
+
+            }
+
+            //Update localStorage todaysDate item
+            localStorage.setItem(habitSelect+"Days", JSON.stringify(habitDays));
+
+            // Update current log with the time for the finished log
+            currentLog.push(finalTime);
+
+            // Update log with new latest log
+            habitLogs[0] = currentLog;
 
             // Update total in habit
             currentHabit.total = oldTotal + finalTime;

@@ -26,7 +26,7 @@ export default function NewHabitCard(props) {
             }
 
             //New Habit
-            habitList.push(name)
+            habitList.push(name);
             localStorage.setItem("habitList", JSON.stringify(habitList)); //Add habitName to habitList
             let newHabit = {
                 "name": name,
@@ -38,6 +38,9 @@ export default function NewHabitCard(props) {
             localStorage.setItem(name, JSON.stringify(newHabit)); //Create new habit item
 
             console.log("New Habit Created:", newHabit)
+
+            //Initialize Days Item
+            localStorage.setItem(name+"Days",JSON.stringify({}));
 
             habitNameRef.current.value = "";
             metricRef.current.checked = false;

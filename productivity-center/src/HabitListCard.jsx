@@ -125,6 +125,7 @@ export default function HabitListCard(props) {
                 </div>
             )    
         });
+
         return(
             <>
                <div>
@@ -133,6 +134,8 @@ export default function HabitListCard(props) {
                     <Button text = "🗑️" onclick = {() => deleteHabit()}/>
                     {logElements}
                 </div> 
+
+                
             </>
         )
     }
