@@ -40,7 +40,8 @@ export default function NewHabitCard(props) {
             console.log("New Habit Created:", newHabit)
 
             //Initialize Days Item
-            localStorage.setItem(name+"Days",JSON.stringify({}));
+            localStorage.setItem(name+"Days",JSON.stringify({"metric":newHabit["metric"]}));
+            
 
             habitNameRef.current.value = "";
             metricRef.current.checked = false;

@@ -14,22 +14,25 @@ import { useState } from "react";
 const InputField = forwardRef(function InputField(props,ref) {
     const [value, setValue] = useState(props.default || "");
     const handleChange = (e) => {
-        console.log(e.target.value)
+        
+
         if(ref){
+            
             if (props.type === "checkbox") {
                 ref.current.checked = e.target.checked;
             } else {
                 ref.current.value = e.target.value;
             }
         }
-        else{ 
-            if(props.stateSetter){
+        
+        else if(props.stateSetter){
+            
+            setValue(e.target.value);
 
-                props.stateSetter(e.target.value);
-                setValue(e.target.value);
-
-            }
+            props.stateSetter(e.target.value);
+            
         }
+        
     };
 
     //Textarea    
@@ -44,13 +47,13 @@ const InputField = forwardRef(function InputField(props,ref) {
     }
     //Select
     else if(props.type == "select"){
-        const selectOptions = props.options.map((habit, index) => (
-            <option value={habit} key={index}>
-                {habit}
+        const selectOptions = props.options.map((item, index) => (
+            <option value={item} key={index}>
+                {item}
             </option>
         ));
 
-        selectOptions.unshift(<option value = "" key = "" defaultValue>Select a habit</option>)
+        selectOptions.unshift(<option value = "" key = "" defaultValue>Select</option>)
         
         return (
             <>

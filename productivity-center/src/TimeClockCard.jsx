@@ -19,7 +19,6 @@ export default function TimeClockCard(props){
     // Get current habit
     useEffect(() => {
         if(habitSelect){
- 
             // Get habit from local storage
             let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
 
@@ -59,7 +58,7 @@ export default function TimeClockCard(props){
 
                     // Habit does not have an active log 
                     //(i.e. latest log has start AND end time)
-                    else if(latestLog.length === 2){
+                    else if(latestLog.length === 3){
 
                         setHabitState("timeHabitInactive");
 
@@ -80,8 +79,9 @@ export default function TimeClockCard(props){
     
     // Setup current state
     useEffect( () => {
+        
         if(habitSelect){
-
+            console.log(habitSelect);
             // Get Selected Habit from Local Storage
             let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
 
@@ -110,7 +110,7 @@ export default function TimeClockCard(props){
                     console.log(startDate);
                     let currentDate = new Date(); //right now
                     let timePassed = (currentDate.getTime() - startDate.getTime())/1000;
-                    setClock(timePassed)
+                    setClock(Number(timePassed.toFixed(2)))
 
                 break;
             }
@@ -120,6 +120,7 @@ export default function TimeClockCard(props){
             console.log("habit state:",habitState)
         }
         else{
+            
            setHabitState("noHabitSelected")
         }
     }, [habitState, habitSelect]);
@@ -134,13 +135,13 @@ export default function TimeClockCard(props){
      */
     const updateCount = () =>{
         let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
-        
+        const today = new Date();
         // No logs for today yet
         if(habitState == "countHabitInactive"){
 
             // Create count log for today
             const addedTodayLog = currentHabit.log
-            const today = new Date();
+            
 
             addedTodayLog.unshift([today.toDateString(),0]);
 
@@ -166,6 +167,30 @@ export default function TimeClockCard(props){
         console.log(currentHabit)
         localStorage.setItem(habitSelect, JSON.stringify(currentHabit));
 
+        // Update in habitDays
+        //Today's total already exists
+        const habitDays = JSON.parse(localStorage.getItem(habitSelect + "Days"));
+        
+        if (today.toDateString() in habitDays){
+
+            // Previous total time for today
+            const oldDayCount = habitDays[today.toDateString()];
+
+            // Update with new total
+            habitDays[today.toDateString()] = oldDayCount + 1;
+
+        }
+        
+        // Today's total has not been started
+        else{
+
+            // Create new key with today's date and current total
+            habitDays[today.toDateString()] = currentHabit.total;
+
+        }
+
+        //Update localStorage todaysDate item
+        localStorage.setItem(habitSelect+"Days", JSON.stringify(habitDays));
     };
 
     /**
@@ -226,7 +251,7 @@ export default function TimeClockCard(props){
             const startTime = new Date(currentLog[0]);
 
             // Calculate new addition in time
-            const finalTime = (endTime.getTime() - startTime.getTime())/1000;
+            const finalTime = ((endTime.getTime() - startTime.getTime())/1000);
             const oldTotal = currentHabit.total;
 
             // Update today's total
@@ -239,7 +264,8 @@ export default function TimeClockCard(props){
                 const oldDayTime = habitDays[todaysDate];
 
                 // Update with new total
-                habitDays[todaysDate] = oldDayTime + finalTime;
+                let newTime = oldDayTime + finalTime
+                habitDays[todaysDate] = Number(newTime.toFixed(2));
             }
             // Today's total has not been started
             else{
@@ -290,7 +316,7 @@ export default function TimeClockCard(props){
         console.log(startDate);
         let currentDate = new Date(); //right now
         let timePassed = (currentDate.getTime() - startDate.getTime())/1000;
-        setClock(timePassed)
+        setClock(Number(timePassed.toFixed(2)))
     }
 
     /**

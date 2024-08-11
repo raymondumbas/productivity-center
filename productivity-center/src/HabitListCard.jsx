@@ -1,6 +1,6 @@
 import Button from './Button.jsx'
 import { useState } from 'react'
- 
+
 export default function HabitListCard(props) {
     const [view, setView] = useState("gallery");
     const [displayHabit, setDisplayHabit] = useState("");
@@ -19,7 +19,10 @@ export default function HabitListCard(props) {
         }
         console.log("after",habitList)
         localStorage.setItem("habitList", JSON.stringify(habitList));
+
+        // Remove habit from localStorage
         localStorage.removeItem(displayHabit);
+        localStorage.removeItem(displayHabit+"Days");
         setView("gallery");
     }
 
@@ -38,22 +41,34 @@ export default function HabitListCard(props) {
         // Remove metric value from total
         const oldTotal = currentHabit.total;
 
+        // Get habitDays
+        let habitDays = JSON.parse(localStorage.getItem(displayHabit + "Days"));
+    
+
         if(currentHabit.metric == "time"){
             const startTime = new Date(targetLog[0]);
             const endTime = new Date(targetLog[1]);
 
             const logTime = (endTime.getTime() - startTime.getTime())/1000;
             currentHabit.total = oldTotal - logTime;
+
+            const oldDayTotal = habitDays[endTime.toDateString()];
+            habitDays[endTime.toDateString()] = oldDayTotal - logTime;
         }
         else if(currentHabit.metric == "count"){
             
             currentHabit.total = oldTotal - targetLog[1];
+
+            const oldDayTotal = habitDays[targetLog[0]];
+            habitDays[endTime.toDateString()] = oldDayTotal - targetLog[1];
+
         }
 
-        //Update habit
-        localStorage.setItem(displayHabit, JSON.stringify(currentHabit))
+        // Update habitDays
+        localStorage.setItem(displayHabit + "Days", JSON.stringify(habitDays));
 
-        
+        // Update habit
+        localStorage.setItem(displayHabit, JSON.stringify(currentHabit));
 
     }
 
@@ -94,10 +109,14 @@ export default function HabitListCard(props) {
 
     else if(view == "details"){
         const currentHabit = JSON.parse(localStorage.getItem(displayHabit));
+
+        // Create list of all logs for current habit
         const logElements = currentHabit.log.map((log,index) => {
+
             let logUnits;
             let zeroLogItem;
             let oneLogItem;
+
             if(currentHabit.metric == "time"){
     
                 zeroLogItem = (new Date(log[0])).getTime();
@@ -114,6 +133,7 @@ export default function HabitListCard(props) {
                 logUnits = log[1];
             }
 
+            // Return a single formatted log
             return(
                 <div key = {index}>
 
@@ -126,12 +146,49 @@ export default function HabitListCard(props) {
             )    
         });
 
+        // Create weekly overview
+        let weeklyOverview = [];
+        let todayDate = new Date();
+        const habitDays = JSON.parse(localStorage.getItem(displayHabit+"Days"));
+        
+
+        for(let i = 6; i >= 0; i--){
+            
+            console.log(todayDate)
+            const dateString = todayDate.toDateString();
+            const formattedString = (todayDate.getMonth() + 1) + "/" + todayDate.getDate() + "/" + String(todayDate.getFullYear()).slice(-2);
+            // Logs for this day exist
+            if(dateString in habitDays){
+                weeklyOverview.unshift(
+                    <div key = {i}>
+                        <span>{formattedString}</span>
+                        <span>{habitDays[dateString]}</span>
+                    </div>
+                );
+            }
+
+            // No logs for this day
+            else{
+                weeklyOverview.unshift(
+                    <div key = {i}>
+                        <span>{formattedString}</span>
+                        <span>0</span>
+                    </div>
+                );
+            }
+
+            todayDate.setDate(todayDate.getDate() - 1);
+
+        }
+
+
         return(
             <>
                <div>
                     <Button text = "<-" onclick = {() => setView("gallery")}/>
                     <span>{displayHabit}</span>
                     <Button text = "🗑️" onclick = {() => deleteHabit()}/>
+                    {weeklyOverview}
                     {logElements}
                 </div> 
 
