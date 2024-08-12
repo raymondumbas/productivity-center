@@ -1,5 +1,6 @@
 import Button from './Button.jsx'
 import { useState } from 'react'
+import './HabitListCard.css'
 
 export default function HabitListCard(props) {
     const [view, setView] = useState("gallery");
@@ -46,21 +47,17 @@ export default function HabitListCard(props) {
     
 
         if(currentHabit.metric == "time"){
-            const startTime = new Date(targetLog[0]);
-            const endTime = new Date(targetLog[1]);
 
-            const logTime = (endTime.getTime() - startTime.getTime())/1000;
-            currentHabit.total = oldTotal - logTime;
+            currentHabit.total = oldTotal - targetLog[2];
 
-            const oldDayTotal = habitDays[endTime.toDateString()];
-            habitDays[endTime.toDateString()] = oldDayTotal - logTime;
+            habitDays[targetLog[0]] = habitDays[targetLog[0]] - targetLog[2];
         }
         else if(currentHabit.metric == "count"){
             
             currentHabit.total = oldTotal - targetLog[1];
 
             const oldDayTotal = habitDays[targetLog[0]];
-            habitDays[endTime.toDateString()] = oldDayTotal - targetLog[1];
+            habitDays[targetLog[0]] = habitDays[targetLog[0]] - targetLog[1];
 
         }
 
@@ -90,20 +87,23 @@ export default function HabitListCard(props) {
             }
     
             return(
-                <div key = {index} onClick = {displayHabitDetails}>
-                        <span>{habit}</span>
-                        <span>{currentHabit.total}</span>
-                        <span>{currentHabit.description}</span>
+                <div className = "habitElement" key = {index} onClick = {displayHabitDetails}>
+                        <span className = "habitElementName">{habit}</span>
+                        <span className = "habitElementTotal">{currentHabit.total}</span>
+                        <span className = "habitElementDescription"> {currentHabit.description}</span>
                 </div>
             )    
         });
 
         return(
-            <>
-                <h1>Your Habits</h1>
-                <Button text = "+" onclick = {showNewHabit} />
-                {habitElements}
-            </>
+            <div className = "habitListCard">
+                <Button className = "createNewButton" text = "+" onclick = {showNewHabit}  title = "Create New Habit"/>
+                <div className = "cardTitle">Your Habits</div>
+                <div className = "habitElementsContainer">
+                    {habitElements}
+                </div>
+                
+            </div>
             )
     }
 
@@ -123,7 +123,7 @@ export default function HabitListCard(props) {
     
                 if(log[1] != null){
                     oneLogItem = (new Date(log[1])).getTime();
-                    logUnits = (oneLogItem - zeroLogItem)/1000;
+                    logUnits = log[2];
                 }
             }
 
@@ -135,8 +135,7 @@ export default function HabitListCard(props) {
 
             // Return a single formatted log
             return(
-                <div key = {index}>
-
+                <div className = "habitLog" key = {index}>
                     <span>{zeroLogItem}</span>
                     <span>{oneLogItem}</span>
                     <span>{logUnits}</span>
@@ -160,9 +159,9 @@ export default function HabitListCard(props) {
             // Logs for this day exist
             if(dateString in habitDays){
                 weeklyOverview.unshift(
-                    <div key = {i}>
-                        <span>{formattedString}</span>
-                        <span>{habitDays[dateString]}</span>
+                    <div className = "weeklyOverviewDay" key = {i}>
+                        <div>{formattedString}</div>
+                        <div>{habitDays[dateString]}</div>
                     </div>
                 );
             }
@@ -170,9 +169,9 @@ export default function HabitListCard(props) {
             // No logs for this day
             else{
                 weeklyOverview.unshift(
-                    <div key = {i}>
-                        <span>{formattedString}</span>
-                        <span>0</span>
+                    <div className = "weeklyOverviewDay" key = {i}>
+                        <div>{formattedString}</div>
+                        <div>0</div>
                     </div>
                 );
             }
@@ -184,12 +183,14 @@ export default function HabitListCard(props) {
 
         return(
             <>
-               <div>
-                    <Button text = "<-" onclick = {() => setView("gallery")}/>
-                    <span>{displayHabit}</span>
-                    <Button text = "🗑️" onclick = {() => deleteHabit()}/>
-                    {weeklyOverview}
-                    {logElements}
+               <div className = "habitListCard">
+                    <div className = "habitDetailsButtons">
+                        <Button text = "←" onclick = {() => setView("gallery")}/>
+                        <Button text = "🗑️" onclick = {() => deleteHabit()}/>
+                    </div>
+                    <div className = "cardTitle">{displayHabit}</div>
+                    <div className = "weeklyOverview">{weeklyOverview}</div>
+                    <div className = "logElements">{logElements}</div>
                 </div> 
 
                 

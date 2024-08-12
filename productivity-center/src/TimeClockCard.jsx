@@ -3,6 +3,7 @@ import {useEffect} from 'react'
 import Button from './Button.jsx'
 import OutputDisplay from './OutputDisplay.jsx'
 import InputField from './InputField.jsx'
+import './TimeClockCard.css'
 
 export default function TimeClockCard(props){
     //----------------Variables----------------
@@ -251,7 +252,8 @@ export default function TimeClockCard(props){
             const startTime = new Date(currentLog[0]);
 
             // Calculate new addition in time
-            const finalTime = ((endTime.getTime() - startTime.getTime())/1000);
+            let finalTime = ((endTime.getTime() - startTime.getTime())/1000);
+            finalTime = Number(finalTime.toFixed(2));
             const oldTotal = currentHabit.total;
 
             // Update today's total
@@ -336,10 +338,10 @@ export default function TimeClockCard(props){
     switch(habitState){
         case "noHabitSelected":
             return( 
-                <>  
-                    <Button text = "+" onclick = {showNewHabit} />
+                <div className = "timeClockCard">  
+                    <Button className = "createNewButton" text = "+" onclick = {showNewHabit} title = "Create New Habit" />
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
-                </>
+                </div >
             )
         
         case "countHabitActive":
@@ -348,38 +350,38 @@ export default function TimeClockCard(props){
             const currentDate = new Date().toDateString();
 
             return( 
-                <>  
-                    <Button text = "+" onclick = {showNewHabit} />
-                    <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
-                    <OutputDisplay text = {currentDate} />
-                    <OutputDisplay text = {count}/>
-                    <OutputDisplay text = {description}/>
-                    <Button text = "Done" onclick = {updateCount}/>
+                <div className = "timeClockCard">  
+                    <Button className = "createNewButton" text = "+" onclick = {showNewHabit} title = "Create New Habit"/>
+                    <InputField  name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
+                    <OutputDisplay className = "timeClockDate" text = {currentDate} />
+                    <OutputDisplay className = "timeClockMetric" text = {count}/>
+                    <OutputDisplay className = "timeClockDescription" text = {description}/>
+                    <Button className = "cardButton" text = "Done" onclick = {updateCount}/>
 
-                </>
+                </div>
             ) 
         
         case "timeHabitInactive":
             return(
-                <>
-                    <Button text = "+" onclick = {showNewHabit} />
+                <div className = "timeClockCard">
+                    <Button className = "createNewButton" text = "+" onclick = {showNewHabit} title = "Create New Habit"/>
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
-                    <OutputDisplay text = {clock} />
-                    <OutputDisplay text = {description}/>
-                    <Button text = "Start" onclick = {startTime} />
-                </>
+                    <OutputDisplay className = "timeClockMetric" text = {clock} />
+                    <OutputDisplay className = "timeClockDescription" text = {description}/>
+                    <Button className = "cardButton" text = "Start" onclick = {startTime} />
+                </div>
             )
         
         case "timeHabitActive":
             return( 
-                <>  
-                    <Button text = "+" onclick = {showNewHabit} />
+                <div className = "timeClockCard">  
+                    <Button className = "createNewButton" text = "+" onclick = {showNewHabit} title = "Create New Habit" />
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
-                    <OutputDisplay text = {clock} />
-                    <OutputDisplay text = {description}/>
-                    <Button text = "Update" onclick = {updateTime} />
-                    <Button text = "Stop" onclick = {stopTime}/>
-                </>
+                    <OutputDisplay className = "timeClockMetric" text = {clock + "s"} />
+                    <OutputDisplay className = "timeClockDescription" text = {description}/>
+                    <Button className = "cardButton" text = "Update" onclick = {updateTime} />
+                    <Button className = "cardButton" text = "Stop" onclick = {stopTime}/>
+                </div>
             ) 
     }
 }
