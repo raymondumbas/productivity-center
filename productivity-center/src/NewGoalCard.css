@@ -1,0 +1,29 @@
+.newGoalCard{
+
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.newGoalCard label{
+    font-size: 1.5rem;
+}
+
+.newGoalCard input{
+    font-size: 2rem;
+    text-align: center;
+}
+
+.newGoalCard select{
+    font-size:1.5rem;
+    border-radius: 25px;
+    padding: 1rem;
+}
+
+.newGoalCardGroup{
+    display:flex;
+    align-items: center;
+    gap: 1rem;
+}

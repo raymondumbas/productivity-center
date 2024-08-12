@@ -1,0 +1,30 @@
+#NavBar{
+
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(80,128,102);
+    border-radius: 25px;
+    padding-top: 3rem;
+}
+
+.navButton{
+    width: 100%;
+    color: white;
+    font-size: 1.5rem;
+    border: none;
+    background: none;
+    padding: 2rem 1rem;
+    transition: 
+        color 1s,
+        background-color 1s;
+}
+
+.navButton:hover{
+    color: black;
+    background: rgba(255, 255, 255, 0.394);
+    
+    cursor: pointer;
+}
+
+
+

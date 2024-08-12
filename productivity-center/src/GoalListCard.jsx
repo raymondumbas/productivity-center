@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Button from './Button.jsx'
 import { updateGoal } from './utilities.jsx';
-
+import './GoalListCard.css'
 export default function GoalListCard(props){
     const [view, setView] = useState("gallery");
     const [displayGoal, setDisplayGoal] = useState("");
@@ -50,44 +50,46 @@ export default function GoalListCard(props){
             }
 
             return(
-                <div key = {index} onClick = {displayGoalDetails}>
-                        <span>{goal}</span>
-                        <span>{success}</span>
+                <div className = "goalElement" key = {index} onClick = {displayGoalDetails}>
+                        <span className = "goalElementName">{goal}</span>
+                        <span className = "goalElementSuccess">{success}</span>
+                        <span className = "goalElementDescription">{goalStatus["habit"] + " " + goalStatus["metric"]}</span>
                 </div>
             )
         });
 
         return(
-            <>
-                <h1>Your Goals</h1>
-                <Button text = "+" onclick = {showNewGoal} />
+            <div className = "goalListCard">
+                <Button className = "createNewButton" text = "+" onclick = {showNewGoal} />
+                <div className = "cardTitle">Your Goals</div>
                 {goalElements}
-            </>
+            </div>
             )
     }
 
     else if(view == "details"){
         const goalStatus = updateGoal(displayGoal);
-        let statusDisplay = [];
+        let statusOverview = [];
+        let goalDetails = [];
 
         // Display goal metric
-        statusDisplay.push(
+        goalDetails.push(
             <div>{goalStatus["metric"] + " Based"}</div>
         );
 
         // Display habit the goal is about
-        statusDisplay.push(
+        goalDetails.push(
             <div>{"Habit: " + goalStatus["habit"]}</div>
         );
 
         // Display goal success
         if(goalStatus["success"]){
-            statusDisplay.push(
+            goalDetails.push(
                 <div>Goal Completed</div>
             );
         }
         else{
-            statusDisplay.push(
+            goalDetails.push(
                 <div>Goal Not Completed</div>
             );
         }
@@ -95,7 +97,7 @@ export default function GoalListCard(props){
         // Display completion
         if(goalStatus["metric"] === "Duration"){
             const percentage = (goalStatus["completion"][0]/goalStatus["amount"])*100
-            statusDisplay.push(
+            statusOverview.push(
                 <div>{percentage + "% completed"}</div>
             );
         }
@@ -108,7 +110,7 @@ export default function GoalListCard(props){
                 const currentPercentage = (currentCompletion/goalAmount)*100
 
                 return(
-                    <div key = {index}>
+                    <div className = "statusOverviewDay" key = {index}>
                         <div>{date + ": "}</div>
                         <div>{currentCompletion + "/" + goalAmount + "  (" + currentPercentage.toFixed(2) + "%)  "}</div>
                     </div>
@@ -116,18 +118,20 @@ export default function GoalListCard(props){
 
             });
 
-            statusDisplay.push(perDayDisplay);
+            statusOverview.push(perDayDisplay);
         }
 
         // Calculate progress of goal
         return(
-            <>
-                <Button text = "<-" onclick = {() => setView("gallery")}/>
-                {displayGoal}
-                <Button text = "🗑️" onclick = {() => deleteGoal()}/>
-                {statusDisplay}
-              
-            </>
+            <div className = "goalListCard">
+                <div className = "goalDetailsButtons">
+                    <Button text = "<-" onclick = {() => setView("gallery")}/>
+                    <Button text = "🗑️" onclick = {() => deleteGoal()}/>
+                </div>
+                <div className = "cardTitle" >{displayGoal}</div>
+                <div className = "goalDetails">{goalDetails}</div>
+                <div className = "statusOverview" >{statusOverview}</div>
+            </div>
             )
     }
 }

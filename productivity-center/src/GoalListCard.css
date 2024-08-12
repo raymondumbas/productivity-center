@@ -1,0 +1,64 @@
+.goalListCard{
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.goalElement{
+    display:flex;
+    flex-direction: column;
+    background-color: white;
+    width: 20vw;
+    height: 20vh;
+    text-align: center;
+    border-radius: 30px;
+    justify-content: space-between;
+    padding:2rem;
+    transition: 1s;
+}
+.goalElement:hover{
+    cursor: pointer;
+    width: 25vw;
+    height: 25vh;
+}
+
+.goalElementName{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.goalElementSuccess{
+    font-size: 2rem;
+}
+
+.goalDetailsButtons{
+    display:flex;
+    justify-content: space-between;
+    width: 80%;
+}
+
+.goalDetailsButtons button{
+    font-size: 2rem;
+    padding: 1rem;
+    border-radius: 30px;
+}
+
+.goalDetails{
+    font-size: 2rem;
+    display:flex;
+    gap: 3rem;
+}
+.statusOverview{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.statusOverviewDay{
+    border-radius: 30px;
+    background-color: white;
+    font-size: 1.5rem;
+    padding: 1rem;
+    text-align: center;
+}

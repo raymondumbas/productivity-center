@@ -2,6 +2,7 @@ import {useRef} from 'react'
 import { useState } from 'react'
 import InputField from './InputField.jsx'
 import Button from './Button.jsx'
+import './NewGoalCard.css'
 
 export default function NewGoalCard(props) {
     
@@ -103,15 +104,20 @@ export default function NewGoalCard(props) {
     const habitOptions = JSON.parse(localStorage.getItem("habitList"));
     const metricOptions = ["Per Day", "Duration"];
     return (
-        <>
-            Create New Goal <br></br>
+        <div className = "newGoalCard">
+            <div className = "cardTitle">Create New Goal</div>
+           
             <InputField name = "Goal Name:" type = "text" ref = {nameRef}/>
-            <InputField name = "Habit:" type = "select" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitOptions}/>
-            <InputField name = "Metric:" type = "select" state = {metricSelect} stateSetter = {setMetricSelect} options = {metricOptions}/>
+            <div className = "newGoalCardGroup">
+                <InputField name = "Habit:" type = "select" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitOptions}/>
+                <InputField name = "Metric:" type = "select" state = {metricSelect} stateSetter = {setMetricSelect} options = {metricOptions}/>
+            </div>
             <InputField name = "Amount:" type = "number" ref = {amountRef}/>
-            <InputField name = "Start" type = "date" ref = {startRef}/>
-            <InputField name = "End" type = "date" ref = {endRef}/>
-            <Button text = "+" onclick = {createNewGoal}/>
-        </>
+            <div className = "newGoalCardGroup">
+                <InputField name = "Start" type = "date" ref = {startRef}/>
+                <InputField name = "End" type = "date" ref = {endRef}/>
+            </div>
+            <Button  className = "cardButton" text = "+" onclick = {createNewGoal}/>
+        </div>
     )
 }

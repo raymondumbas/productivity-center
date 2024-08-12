@@ -57,8 +57,8 @@ const InputField = forwardRef(function InputField(props,ref) {
         
         return (
             <>
-                <label htmlFor = {props.name}>{props.name}</label>
-                <select type = {props.type} name = {props.name} id = {props.name} onChange = {handleChange} ref = {ref} value = {value}>{selectOptions}</select>
+                <label  htmlFor = {props.name}>{props.name}</label>
+                <select  type = {props.type} name = {props.name} id = {props.name} onChange = {handleChange} ref = {ref} value = {value}>{selectOptions}</select>
             </>
         )
     }

@@ -1,0 +1,33 @@
+.newHabitCard{
+
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.newHabitTitle{
+    font-size:4rem;
+    margin-top: 3rem;
+}
+
+.newHabitCard label{
+    font-size: 2rem;
+}
+
+.newHabitCard input{
+    font-size: 3rem;
+    text-align: center;
+}
+
+.newHabitCard textarea{
+    resize: none;
+    width: 30vw;
+    font-size: 1.2rem;
+}
+
+.newHabitCard input[type='checkbox']{
+    cursor: pointer;
+    height: 3rem;
+    width: 3rem;
+}

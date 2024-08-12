@@ -1,0 +1,53 @@
+/*
+    Light green: rgb(175,244,198,255)
+    Dark green: rgb(80,128,102,255)
+*/
+html{
+    background-color: rgba(175,244,198,255);
+    scroll-behavior: smooth;
+}
+
+button{
+    cursor: pointer;
+}
+
+
+.app{
+    display: flex;
+    height: 95vh;
+}
+
+.createNewButton{
+    font-size: 4rem;
+    align-self: flex-end;
+    margin-right: 2rem;
+    margin-top: 2rem;
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+
+}
+
+
+.createNewButton:active{
+    background-color: rgb(80,128,102,255);
+    color: white;
+}
+
+.cardTitle{
+    margin-top: 2rem;
+    font-size: 4rem; 
+}
+
+.cardButton{
+    bottom:0;
+    font-size: 2rem;
+    margin: auto;
+    padding: 1rem 1.5rem;
+    border-radius: 25px;
+}
+
+
+.cardButton:active{
+    background-color: rgb(80,128,102,255);
+    color: white;
+}

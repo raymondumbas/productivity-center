@@ -119,10 +119,10 @@ export default function HabitListCard(props) {
 
             if(currentHabit.metric == "time"){
     
-                zeroLogItem = (new Date(log[0])).getTime();
+                zeroLogItem = (new Date(log[0])).toLocaleString();
     
                 if(log[1] != null){
-                    oneLogItem = (new Date(log[1])).getTime();
+                    oneLogItem = (new Date(log[1])).toLocaleString();
                     logUnits = log[2];
                 }
             }
@@ -136,7 +136,7 @@ export default function HabitListCard(props) {
             // Return a single formatted log
             return(
                 <div className = "habitLog" key = {index}>
-                    <span>{zeroLogItem}</span>
+                    <span>{zeroLogItem}</span> -
                     <span>{oneLogItem}</span>
                     <span>{logUnits}</span>
                     <Button text = "🗑️" onclick = {() => deleteLog(currentHabit,log)}/>

@@ -1,5 +1,5 @@
 export default function OutputDisplay(props){
     return( 
-        <div>{props.text}</div>
+        <div className = {props.className}>{props.text}</div>
     )
 }

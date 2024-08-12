@@ -3,6 +3,7 @@ import {useRef} from 'react'
 import {useEffect} from 'react'
 import InputField from './InputField.jsx'
 import Button from './Button.jsx'
+import './NewHabitCard.css'
 
 export default function NewHabitCard(props) {
     //References
@@ -55,12 +56,12 @@ export default function NewHabitCard(props) {
 
 
     return (
-        <>
-            Create New Habit <br></br>
-            <InputField name = "Habit Name:" type = "text" ref = {habitNameRef}/>
+        <div className = "newHabitCard">
+            <div className = "cardTitle"> Create New Habit</div>
+            <InputField className = "create" name = "Habit Name:" type = "text" ref = {habitNameRef}/>
             <InputField name = "Timed?" type = "checkbox" ref = {metricRef}/><br></br>
             <InputField name = "Description" type = "textarea" ref = {descriptionRef}/>
-            <Button text = "+" onclick = {createNewHabit}/>
-        </>
+            <Button className = "cardButton"text = "+" onclick = {createNewHabit}/>
+        </div>
     )
 }

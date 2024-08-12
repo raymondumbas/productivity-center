@@ -25,9 +25,9 @@ export default function NavBar(props) {
     }
     return(
         <div id = "NavBar">
-            <Button text = "time clock" onclick = {toTimeClock}/>
-            <Button text = "habits" onclick = {toHabits}/>
-            <Button text = "goals" onclick = {toGoals}/>
+            <Button className = "navButton" text = "time clock" onclick = {toTimeClock}/>
+            <Button className = "navButton" text = "habits" onclick = {toHabits}/>
+            <Button className = "navButton" text = "goals" onclick = {toGoals}/>
 
         </div>
     )
