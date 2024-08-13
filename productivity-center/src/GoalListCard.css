@@ -1,64 +1,111 @@
+/* ==========================================================================
+   Goal List Card Styles
+   ========================================================================== */
 .goalListCard{
-    width:100%;
+
+    /* Display */
     display:flex;
     flex-direction: column;
     align-items: center;
+
+    /* Box Model */
+    width:100%;
 }
 
+/* Gallery Display
+   ========================================================================== */
+
+/* Goal Gallery Item*/
 .goalElement{
+
+    /* Display */
     display:flex;
     flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
     background-color: white;
+    border-radius: 30px;
+
+    /* Box Model */
     width: 20vw;
     height: 20vh;
-    text-align: center;
-    border-radius: 30px;
-    justify-content: space-between;
     padding:2rem;
+
+    /* Other */
     transition: 1s;
 }
+
 .goalElement:hover{
-    cursor: pointer;
+
+    /* Box Model */
     width: 25vw;
     height: 25vh;
+
+    /* Other */
+    cursor: pointer;
+
 }
 
 .goalElementName{
+
+    /* Display */
     font-size: 2rem;
     font-weight: bold;
+
 }
 
 .goalElementSuccess{
+
+    /* Display */
     font-size: 2rem;
 }
 
+/* Details Display
+   ========================================================================== */
+
 .goalDetailsButtons{
+
+    /* Display */
     display:flex;
     justify-content: space-between;
     width: 80%;
 }
 
 .goalDetailsButtons button{
+
+    /* Display */
     font-size: 2rem;
-    padding: 1rem;
     border-radius: 30px;
+
+    /* Box Model */
+    padding: 1rem;
+
 }
 
 .goalDetails{
+
+    /* Display */
     font-size: 2rem;
     display:flex;
     gap: 3rem;
+
 }
 .statusOverview{
+
+    /* Display */
     display:flex;
     flex-wrap: wrap;
     gap: 1.5rem;
 }
 
 .statusOverviewDay{
-    border-radius: 30px;
+
+    /* Display */
+    text-align: center;
     background-color: white;
     font-size: 1.5rem;
+    border-radius: 30px;
+
+    /* Box Model */
     padding: 1rem;
-    text-align: center;
 }

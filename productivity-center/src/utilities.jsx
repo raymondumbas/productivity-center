@@ -1,16 +1,23 @@
-/* 
-    Update Goal
-
-*/
+/**
+ * Update the completion status of the given goal
+ * @param {string} goalName
+ * @returns {object} dates, metric, habit, status, completion, amount, success
+ */
 export function updateGoal(goalName){
+
+    // Get goal item from localStorage
     const goal = JSON.parse(localStorage.getItem(goalName));
-    console.log(goalName)
-    const habitDays= JSON.parse(localStorage.getItem(goal.habit+"Days"));
+
+    // Get habitDays list from localStorage
+    const habitDays= JSON.parse(localStorage.getItem(goal.habit+"Days")); 
+
+    // Create constants for each relevant date
     const today = new Date();
     const start = new Date(goal.duration[0]);
     const end = new Date(goal.duration[1]);
         
     // Update the status of the goal
+
     // Past Habit 
     if(today > end){
         
@@ -33,9 +40,10 @@ export function updateGoal(goalName){
     }
 
     // Update completion
-    let currentDate = new Date(start); // Initialize currentDate
+    // Initialize currentDate
+    let currentDate = new Date(start);
 
-    // Loop through duration to get amount 
+    // Loop through duration to get amount towards completion
     let dates = [];
     let completion = [];
     while (currentDate <= end) {
@@ -51,13 +59,11 @@ export function updateGoal(goalName){
 
         }
 
-        console.log("currentAmount", currentAmount)
-
         // Goal is measured per day
         if(goal.metric === "Per Day"){
 
             completion.push(currentAmount);
-            console.log(completion)
+    
         }
 
         // Goal is measured during the whole duration
@@ -71,9 +77,11 @@ export function updateGoal(goalName){
         currentDate.setDate(currentDate.getDate() + 1);
     }
 
+    // Update completion and success of target goal
     goal["completion"] = completion;
     goal["success"] = completion.every(num => num >= goal.amount);
 
+    // Update goal item in localStorage
     localStorage.setItem(goalName, JSON.stringify(goal));
 
     // Return status and completion of goals

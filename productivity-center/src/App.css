@@ -1,6 +1,13 @@
+/* ==========================================================================
+   App Component Styles
+   ========================================================================== */
 /*
     Light green: rgb(175,244,198,255)
     Dark green: rgb(80,128,102,255)
+*/
+
+/*
+    Global Styles
 */
 html{
     background-color: rgba(175,244,198,255);
@@ -11,19 +18,32 @@ button{
     cursor: pointer;
 }
 
-
+/*
+    App.jsx Styles
+*/
 .app{
     display: flex;
     height: 95vh;
 }
 
+
+/*
+    "+" Button (Create New Habit/Goal)
+*/
 .createNewButton{
-    font-size: 4rem;
+
+    /* Positioning */
     align-self: flex-end;
+
+    /* Box Model */
     margin-right: 2rem;
     margin-top: 2rem;
-    border-radius: 50px;
     padding: 0.5rem 1.5rem;
+
+    /* Display */
+    font-size: 4rem;
+    border-radius: 50px;
+
 
 }
 
@@ -33,16 +53,29 @@ button{
     color: white;
 }
 
+
+/*
+    General Card Styles
+*/
 .cardTitle{
+    /* Box Model */
     margin-top: 2rem;
+
+    /* Display */
     font-size: 4rem; 
 }
 
 .cardButton{
+
+    /* Positioning*/
     bottom:0;
-    font-size: 2rem;
+
+    /* Box Model */
     margin: auto;
     padding: 1rem 1.5rem;
+
+    /* Display */
+    font-size: 2rem;
     border-radius: 25px;
 }
 

@@ -1,5 +1,4 @@
-# Productivity Center
-(actual name tbd)
+# Progressivity
 React-based Web App to keep track of habits and goals.
 
 # Current State

@@ -1,33 +1,62 @@
+/* ==========================================================================
+   New Habit Card
+   ========================================================================== */
 .newHabitCard{
 
-    width:100%;
+    /* Display */
     display:flex;
     flex-direction: column;
     align-items: center;
+
+    /* Box Model */
+    width:100%;
+
 }
 
 .newHabitTitle{
+
+    /* Display */
     font-size:4rem;
+
+    /* Box Model */
     margin-top: 3rem;
 }
 
 .newHabitCard label{
+
+    /* Display */
     font-size: 2rem;
+
 }
 
 .newHabitCard input{
+
+    /* Display */
     font-size: 3rem;
     text-align: center;
+
 }
 
 .newHabitCard textarea{
-    resize: none;
-    width: 30vw;
+
+    /* Display */
     font-size: 1.2rem;
+
+    /* Box Model */
+    width: 30vw;
+
+    /* Other */
+    resize: none;
+
 }
 
 .newHabitCard input[type='checkbox']{
-    cursor: pointer;
+
+    /* Box Model */
     height: 3rem;
     width: 3rem;
+
+    /* Other */
+    cursor: pointer;
+
 }

@@ -1,36 +1,64 @@
-import Button from './Button.jsx'
+// Import React Hooks
 import { useState } from 'react'
+
+// Import React Components
+import Button from './Button.jsx'
+
+// Import Styles
 import './HabitListCard.css'
 
+/**
+ * Display list of habits and habit details
+ * @param {state setter} props.setPage
+ * @param {state setter} props.setPrevPage
+ * @returns {} void
+ */
 export default function HabitListCard(props) {
+
+    // State for gallery or details view
     const [view, setView] = useState("gallery");
+
+    // Current habit
     const [displayHabit, setDisplayHabit] = useState("");
 
-    console.log(view)
-    console.log(displayHabit)
-
+    /**
+     * Delete target habit
+     * @returns {} void
+     */
     const deleteHabit = () =>{
 
-        //Remove from habitList
+        // Get habitList from localStorage
         const habitList = JSON.parse(localStorage.getItem("habitList"));
-        console.log("before",habitList)
+        
+        // Find index of target habit
         const index = habitList.indexOf(displayHabit);
+
+        // If habit is found, remove form habitList
         if(index > -1){
             habitList.splice(index,1);
         }
-        console.log("after",habitList)
+       
+        // Update habitList of localStorage
         localStorage.setItem("habitList", JSON.stringify(habitList));
 
-        // Remove habit from localStorage
+        // Remove habit item from localStorage
         localStorage.removeItem(displayHabit);
+
+        // Remove habitDays item form localStorage
         localStorage.removeItem(displayHabit+"Days");
+
+        // Go back to gallery view
         setView("gallery");
     }
 
+    /**
+     * Delete target log
+     * @param {object} currentHabit
+     * @param {object} props.setPrevPage
+     * @returns {} void
+     */
     const deleteLog = (currentHabit, targetLog) => {
-        console.log(currentHabit)
-        console.log(targetLog)
-        
+
         // Find index of targetLog in habit log
         const index = currentHabit.log.indexOf(targetLog);
 
@@ -45,18 +73,24 @@ export default function HabitListCard(props) {
         // Get habitDays
         let habitDays = JSON.parse(localStorage.getItem(displayHabit + "Days"));
     
-
+        // Target Habit is time based
         if(currentHabit.metric == "time"){
 
+            // Update Current Habit total
             currentHabit.total = oldTotal - targetLog[2];
 
+            // Update Habit's Day total
             habitDays[targetLog[0]] = habitDays[targetLog[0]] - targetLog[2];
+
         }
+
+        // Target Habit is count based
         else if(currentHabit.metric == "count"){
             
+            // Update Current Habit total
             currentHabit.total = oldTotal - targetLog[1];
 
-            const oldDayTotal = habitDays[targetLog[0]];
+            // Update Habit's Day total
             habitDays[targetLog[0]] = habitDays[targetLog[0]] - targetLog[1];
 
         }
@@ -69,23 +103,47 @@ export default function HabitListCard(props) {
 
     }
 
+    // Display list of existing habits
     if(view == "gallery"){
 
+        /**
+         * Go to NewHabitCard
+         * @returns {} void
+         */
         const showNewHabit = () =>{
+
+            // Save current page as previous
             props.setPrevPage("habits");
+
+            // Go to NewHabitCard
             props.setPage("newHabit")
 
         }
 
+        // Get habitList from localStorage
         const habitList = JSON.parse(localStorage.getItem("habitList"));
+
+        // Create HTML elements for each habit
         const habitElements = habitList.map((habit,index) => {
+
+            // Get currentHabit item from localStorage
             const currentHabit = JSON.parse(localStorage.getItem(habit));
     
+            /**
+             * Go to details view
+             * @returns {} void
+             */
             const displayHabitDetails = () =>{
+
+                // Set displayHabit to the habit that was clicked on
                setDisplayHabit(habit);
+
+               // Go to details view
                setView("details");
+
             }
     
+            // Return current habit with details
             return(
                 <div className = "habitElement" key = {index} onClick = {displayHabitDetails}>
                         <span className = "habitElementName">{habit}</span>
@@ -95,6 +153,7 @@ export default function HabitListCard(props) {
             )    
         });
 
+        // Return HabitListCard
         return(
             <div className = "habitListCard">
                 <Button className = "createNewButton" text = "+" onclick = {showNewHabit}  title = "Create New Habit"/>
@@ -107,7 +166,10 @@ export default function HabitListCard(props) {
             )
     }
 
+    // Details view of a single habit
     else if(view == "details"){
+
+        // Get currentHabit from localStorage
         const currentHabit = JSON.parse(localStorage.getItem(displayHabit));
 
         // Create list of all logs for current habit
@@ -117,20 +179,37 @@ export default function HabitListCard(props) {
             let zeroLogItem;
             let oneLogItem;
 
+
+            // CurrentHabit is time based
             if(currentHabit.metric == "time"){
     
+                // Get Start Date
                 zeroLogItem = (new Date(log[0])).toLocaleString();
     
+                // Habit is inactive (end date exists)
                 if(log[1] != null){
+
+                    // Get End Date
                     oneLogItem = (new Date(log[1])).toLocaleString();
+
+                    // Get amount from this log
                     logUnits = log[2];
+
                 }
             }
 
+            // CurrentHabit is count based
             else if (currentHabit.metric == "count"){
+
+                // Get Date
                 zeroLogItem = log[0];
+
+                // Not used for count based habit
                 oneLogItem = "";
+
+                // Get amount from this log
                 logUnits = log[1];
+
             }
 
             // Return a single formatted log
@@ -150,12 +229,15 @@ export default function HabitListCard(props) {
         let todayDate = new Date();
         const habitDays = JSON.parse(localStorage.getItem(displayHabit+"Days"));
         
-
+        // Loop through past 7 days
         for(let i = 6; i >= 0; i--){
             
-            console.log(todayDate)
+            // Get the current date
             const dateString = todayDate.toDateString();
+
+            // Current date as mm/dd/yy format
             const formattedString = (todayDate.getMonth() + 1) + "/" + todayDate.getDate() + "/" + String(todayDate.getFullYear()).slice(-2);
+
             // Logs for this day exist
             if(dateString in habitDays){
                 weeklyOverview.unshift(
@@ -176,11 +258,12 @@ export default function HabitListCard(props) {
                 );
             }
 
+            // Advance to next day
             todayDate.setDate(todayDate.getDate() - 1);
 
         }
 
-
+        // Return HabitListCard
         return(
             <>
                <div className = "habitListCard">
@@ -192,8 +275,6 @@ export default function HabitListCard(props) {
                     <div className = "weeklyOverview">{weeklyOverview}</div>
                     <div className = "logElements">{logElements}</div>
                 </div> 
-
-                
             </>
         )
     }

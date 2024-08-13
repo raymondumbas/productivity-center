@@ -1,25 +1,38 @@
+/* ==========================================================================
+   Time Clock Card Styles
+   ========================================================================== */
 .timeClockCard{
-    width:100%;
+
+    /* Display */
     display:flex;
     flex-direction: column;
     align-items: center;
-}
 
-.timeClockCard label{
-    font-size: 1.5rem;
+    /* Box Model */
+    width:100%;
+
 }
 
 .timeClockCard select{
+
+    /* Display */
     font-size:3rem;
     border-radius: 25px;
+
+    /* Box Model */
     padding: 1rem;
+}
+
+/* Time Clock Card items font sizes
+   ========================================================================== */
+.timeClockCard label{
+    font-size: 1.5rem;
 }
 
 .timeClockCard option{
     font-size: 1.5rem;
    
 }
-
 .timeClockDescription{
     font-size: 2rem;
 }

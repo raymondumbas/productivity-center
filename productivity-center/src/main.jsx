@@ -1,7 +1,13 @@
+// Import React 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+
+// Import React Components
 import App from './App.jsx'
+
+// Import Styles
 import './index.css'
+
 //Initialize localStorage
 if(!localStorage.getItem("habitList")){
   localStorage.setItem("habitList",JSON.stringify([]))

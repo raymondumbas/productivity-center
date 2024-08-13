@@ -1,18 +1,27 @@
+// Import React Hooks
 import { useState } from 'react'
+
+// Import Components
 import NewHabitCard from './NewHabitCard.jsx'
 import TimeClockCard from './TimeClockCard.jsx'
 import HabitListCard from './HabitListCard.jsx'
 import NavBar from './NavBar.jsx'
 import GoalListCard from './GoalListCard.jsx'
 import NewGoalCard from './NewGoalCard.jsx'
+
+//Import Styles
 import './App.css';
 
+/**
+* Return the relevant React Page Components
+* @param {} none
+* @returns {} void
+*/
 export default function App() {
+
+  // React Hooks
   const[page, setPage] = useState("timeClock");
   const[prevPage, setPrevPage] = useState("");
-
-  console.log("Current Page:",page);
-  console.log("Previous Page:",prevPage);
 
   // Time Clock Page
   if(page == "timeClock"){

@@ -1,29 +1,50 @@
+/* ==========================================================================
+   New Goal Card Styles
+   ========================================================================== */
 .newGoalCard{
 
-    width:100%;
+    /* Display */
     display:flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+
+    /* Box Model */
+    width:100%;
+
 }
 
 .newGoalCard label{
+
+    /* Display */
     font-size: 1.5rem;
+
 }
 
 .newGoalCard input{
+
+    /* Display */
     font-size: 2rem;
     text-align: center;
+
 }
 
 .newGoalCard select{
+
+    /* Display */
     font-size:1.5rem;
     border-radius: 25px;
+
+    /* Box Model*/
     padding: 1rem;
+
 }
 
 .newGoalCardGroup{
+
+    /* Display */
     display:flex;
     align-items: center;
     gap: 1rem;
+    
 }

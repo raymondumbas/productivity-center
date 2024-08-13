@@ -1,80 +1,138 @@
+/* ==========================================================================
+   Habit List Card Styles
+   ========================================================================== */
 .habitListCard{
-    width:100%;
+
+    /* Display */
     display:flex;
     flex-direction: column;
     align-items: center;
+
+    /* Box Model */
+    width:100%;
+
 }
 
+/* Gallery Display
+   ========================================================================== */
 .habitElementsContainer{
+
+    /* Display */
     display:flex;
     flex-flow: row wrap;
     gap: 5rem;
+
 }
 
 .habitElement{
+
+    /* Display */
     display:flex;
     flex-direction: column;
-    background-color: white;
-    width: 20vw;
-    height: 20vh;
+    justify-content: space-between;
     text-align: center;
     border-radius: 30px;
-    justify-content: space-between;
+    background-color: white;
+
+    /* Box Model */
+    width: 20vw;
+    height: 20vh;
     padding:2rem;
+
+    /* Other */
     transition: 1s;
 }
+
 .habitElement:hover{
-    cursor: pointer;
+
+    /* Box Model */
     width: 25vw;
     height: 25vh;
+
+    /* Other */
+    cursor: pointer;
+
 }
+
 .habitElementName{
+
+    /* Display */
     font-size: 2rem;
     font-weight: bold;
+
 }
+
 .habitElementTotal{
+
+    /* Display */
     font-size: 2rem;
+
 }
 
-
+/* Details Display
+   ========================================================================== */
 .habitDetailsButtons{
+
+    /* Display */
     display:flex;
     justify-content: space-between;
+
+    /* Box Model */
     width: 80%;
+
 }
 
 .habitDetailsButtons button{
+
+    /* Display */
     font-size: 2rem;
-    padding: 1rem;
     border-radius: 30px;
+
+    /* Box Model */
+    padding: 1rem;
+
 }
 
 .weeklyOverview{
+
+    /* Display */
     display:flex;
     gap: 1.5rem;
+
 }
 
 .weeklyOverviewDay{
+
+    /* Display */
+    text-align: center;
     border-radius: 30px;
     background-color: white;
     font-size: 1.5rem;
+
+    /* Box Model */
     padding: 1rem;
-    text-align: center;
+
 }
 
 .habitLog{
+
+    /* Display */
     display: flex;
     flex-direction: row;
     gap: 1rem;
 }
 
 .logElements{
-    font-size: 1.5rem;
+
+    /* Display */
     display:flex;
     flex-direction: column;
-    margin-top: 3rem;
-    width: 50vw;
     align-items: center;
     gap: 1rem;
+    font-size: 1.5rem;
+
+    /* Box Model */
+    margin-top: 3rem;
+    width: 50vw;
 }
 

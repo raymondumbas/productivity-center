@@ -1,51 +1,80 @@
+// Import React Hooks
 import {useRef} from 'react'
-import { useState } from 'react'
+import {useState} from 'react'
+
+// Import React Components
 import InputField from './InputField.jsx'
 import Button from './Button.jsx'
+
+// Import Styles
 import './NewGoalCard.css'
 
+
+/**
+ * Component for creating new goals
+ * @param {state} props.prevPage
+ * @param {state setter} props.setPrevPage
+ * @param {state setter} props.setPage
+ * @returns {} void
+ */
 export default function NewGoalCard(props) {
     
-    
-    //References
+    // References
     const nameRef = useRef(null);
     const amountRef = useRef(null);
     const startRef = useRef(null);
     const endRef = useRef(null);
 
+    // States
     const [habitSelect, setHabitSelect] = useState(null);
     const [metricSelect, setMetricSelect] = useState(null);
 
-    //Functions
+    /**
+     * Create new goal based off of input vlaues
+     * @returns {} void
+     */
     const createNewGoal = () =>{
-        let name = nameRef.current?.value;
+
+        // Select Inputs
         let habit = habitSelect;
         let metric = metricSelect; 
+
+        // Inputs
+        let name = nameRef.current?.value;
         let amount = amountRef.current?.value; 
-        let start = new Date(startRef.current?.value); 
 
-        let endDate = endRef.current?.value; 
-        const [year, month, day] = endDate.split('-').map(Number);
-        let end = new Date(year,month-1, day, 23,59,59); // Set end date to midnight of that date
-
+        // Dates
         const today = new Date();
+        let start = new Date(startRef.current?.value); 
+        let endDate = endRef.current?.value; 
+
+        // Extract year, month, day from endDate 
+        const [year, month, day] = endDate.split('-').map(Number);
+
+        // Set end date to midnight of that date
+        let end = new Date(year,month-1, day, 23,59,59); 
+
+        // If all inputs have a valid value
         if(name != "" && habit != "" && metric != "" && amount != "" && start != "Invalid Date" && end != "Invalid Date"){
-             // Start Date takes place after End Date
-             console.log(typeof amount)
+
+             // Block new goal: Start Date takes place after End Date
             if(start > end){
 
                 console.log("start date takes place after the end date")
 
             }
 
+             // Block new goal:: end date has already passed
             else if(today > end){
 
                 console.log("end date has already passed")
             
             }
 
+            // Valid goal: creation
             else{
 
+                // Get list of goal names from localStorage
                 let goalList = JSON.parse(localStorage.getItem("goalList"));
 
                 //Goal Name Already Exists
@@ -56,8 +85,11 @@ export default function NewGoalCard(props) {
 
                 // New Goal
                 goalList.push(name);
-                localStorage.setItem("goalList", JSON.stringify(goalList)); //Add goalName to goalList
 
+                //Add goalName to goalList
+                localStorage.setItem("goalList", JSON.stringify(goalList)); 
+
+                // Create object for newGoal with all input values
                 let newGoal = {
                     "name": name,
                     "habit": habit,
@@ -70,10 +102,11 @@ export default function NewGoalCard(props) {
 
 
                 // Check Status
-                const today = new Date();
                 // Goal is currently active
                 if(today > start ){
+
                     newGoal["status"] = "active";
+
                 }
 
                 // Goal has not started
@@ -83,10 +116,12 @@ export default function NewGoalCard(props) {
 
                 }
 
-                localStorage.setItem(name, JSON.stringify(newGoal)); //Create new goal item
+                //Create new goal item in localStorage
+                localStorage.setItem(name, JSON.stringify(newGoal)); 
 
                 console.log("New Goal Created:", newGoal)
 
+                // Reset all input values
                 nameRef.current.value = null;
                 amountRef.current.value = null;
                 startRef.current.value = null;
@@ -95,14 +130,20 @@ export default function NewGoalCard(props) {
                 setHabitSelect("null");
                 setMetricSelect("null");
 
+                // Go back to previous page
                 props.setPage(props.prevPage);
                 props.setPrevPage("newGoal");
             }
         }
     }
 
+    // Get list of habits from localStorage
     const habitOptions = JSON.parse(localStorage.getItem("habitList"));
+
+    // Options for metric select 
     const metricOptions = ["Per Day", "Duration"];
+
+    // Return New Goal Card
     return (
         <div className = "newGoalCard">
             <div className = "cardTitle">Create New Goal</div>
