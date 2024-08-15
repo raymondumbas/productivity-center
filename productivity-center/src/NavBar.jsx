@@ -4,6 +4,8 @@ import Button from './Button.jsx'
 // Import styles
 import './NavBar.css'
 
+// Import Image
+import logo from '/progressivityLogo.png'
 /**
  * Navigation Bar
  * @param {state} props.page
@@ -36,10 +38,9 @@ export default function NavBar(props) {
         props.setPrevPage(props.page);
 
     }
-    
     return(
         <div id = "NavBar">
-            <img className = "logoImage" src = "../public/progressivityLogo.png"></img>
+            <img className = "logoImage" src = {logo}></img>
             <Button className = "navButton" text = "time clock" onclick = {toTimeClock}/>
             <Button className = "navButton" text = "habits" onclick = {toHabits}/>
             <Button className = "navButton" text = "goals" onclick = {toGoals}/>
