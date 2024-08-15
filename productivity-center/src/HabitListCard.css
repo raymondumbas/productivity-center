@@ -46,8 +46,8 @@
 .habitElement:hover{
 
     /* Box Model */
-    width: 25vw;
-    height: 25vh;
+    width: 23vw;
+    height: 23vh;
 
     /* Other */
     cursor: pointer;

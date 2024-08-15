@@ -129,6 +129,19 @@ export default function HabitListCard(props) {
             // Get currentHabit item from localStorage
             const currentHabit = JSON.parse(localStorage.getItem(habit));
     
+            //Set units for current habit
+            let units;
+            if(currentHabit.metric == "time"){
+
+                units = "s";
+
+            }
+
+            else if( currentHabit.metric == "count"){
+                
+                units = "times"
+
+            }
             /**
              * Go to details view
              * @returns {} void
@@ -147,7 +160,7 @@ export default function HabitListCard(props) {
             return(
                 <div className = "habitElement" key = {index} onClick = {displayHabitDetails}>
                         <span className = "habitElementName">{habit}</span>
-                        <span className = "habitElementTotal">{currentHabit.total}</span>
+                        <span className = "habitElementTotal">{currentHabit.total + " " + units}</span>
                         <span className = "habitElementDescription"> {currentHabit.description}</span>
                 </div>
             )    

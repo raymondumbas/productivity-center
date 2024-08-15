@@ -35,11 +35,20 @@
     transition: 1s;
 }
 
+.goalElementsContainer{
+    
+    /* Display */
+    display:flex;
+    flex-flow: row wrap;
+    gap: 5rem;
+    
+}
+
 .goalElement:hover{
 
     /* Box Model */
-    width: 25vw;
-    height: 25vh;
+    width: 23vw;
+    height: 23vh;
 
     /* Other */
     cursor: pointer;
@@ -96,6 +105,9 @@
     display:flex;
     flex-wrap: wrap;
     gap: 1.5rem;
+    justify-content: center;
+
+    margin-top: 2rem;
 }
 
 .statusOverviewDay{

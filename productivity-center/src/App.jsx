@@ -26,10 +26,14 @@ export default function App() {
   // Time Clock Page
   if(page == "timeClock"){
     return (
-     <div className = "app"> 
+      <div className = "app">
         <NavBar prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
-        <TimeClockCard className = "card" prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
-     </div>
+        <div className = "pageContent"> 
+            <div className = "siteTitle">Progressivity</div>
+            <TimeClockCard className = "card" prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+        </div>
+      </div>
+
     )
   }
 
@@ -37,9 +41,13 @@ export default function App() {
   if(page == "newHabit"){
     return(
       <div className = "app">
-        <NavBar prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+      <NavBar prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+      <div className = "pageContent">
+      <div className = "siteTitle">Progressivity</div>
         <NewHabitCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+      </div> 
       </div>
+
     )
   }
 
@@ -47,19 +55,28 @@ export default function App() {
   if(page == "habits"){
     return (
       <div className = "app">
-        <NavBar prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+      <NavBar prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+      <div className = "pageContent">
+        <div className = "siteTitle">Progressivity</div>
         <HabitListCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
       </div>
+      </div>
+
     )
   }
 
   //New Goal Page
   if(page == "newGoal"){
     return(
+
       <div className = "app">
         <NavBar prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+        <div className = "pageContent">
+        <div className = "siteTitle">Progressivity</div>
         <NewGoalCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+        </div>
       </div>
+
     )
   }
 
@@ -68,8 +85,12 @@ export default function App() {
     return (
       <div className = "app">
         <NavBar prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
-        <GoalListCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+        <div className = "pageContent">
+          <div className = "siteTitle">Progressivity</div>
+          <GoalListCard prevPage = {prevPage} setPrevPage = {setPrevPage} page = {page} setPage = {setPage}/>
+        </div>
       </div>
+
     )
   }
 

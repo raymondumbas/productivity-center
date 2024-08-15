@@ -39,10 +39,10 @@ export default function NavBar(props) {
     
     return(
         <div id = "NavBar">
+            <img className = "logoImage" src = "../public/progressivityLogo.png"></img>
             <Button className = "navButton" text = "time clock" onclick = {toTimeClock}/>
             <Button className = "navButton" text = "habits" onclick = {toHabits}/>
             <Button className = "navButton" text = "goals" onclick = {toGoals}/>
-
         </div>
     )
 }

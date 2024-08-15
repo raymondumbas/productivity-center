@@ -112,13 +112,13 @@ export default function GoalListCard(props){
             )
         });
 
-        // Gallery View Output
+        // Output Goals Gallery View 
         return(
 
             <div className = "goalListCard">
                 <Button className = "createNewButton" text = "+" onclick = {showNewGoal} />
                 <div className = "cardTitle">Your Goals</div>
-                {goalElements}
+                <div className = "goalElementsContainer">{goalElements} </div>
             </div>
 
         )
@@ -206,12 +206,12 @@ export default function GoalListCard(props){
 
         }
 
-        // Output of Goal List Card
+        // Output Goal Details View
         return(
             <div className = "goalListCard">
                 <div className = "goalDetailsButtons">
-                    <Button text = "<-" onclick = {() => setView("gallery")}/>
-                    <Button text = "🗑️" onclick = {() => deleteGoal()}/>
+                    <Button title = "Go back to gallery" text = "←" onclick = {() => setView("gallery")}/>
+                    <Button title = "Delete goal" text = "🗑️" onclick = {() => deleteGoal()}/>
                 </div>
                 <div className = "cardTitle" >{displayGoal}</div>
                 <div className = "goalDetails">{goalDetails}</div>
