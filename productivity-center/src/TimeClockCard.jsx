@@ -23,17 +23,19 @@ export default function TimeClockCard(props){
      // React States
     const [description, setDescription] = useState("");
     const [habitSelect, setHabitSelect] = useState("");
-    const [clock, setClock] = useState("");
+    const [habitObject, setHabitObject] = useState(null);
     const [count, setCount] = useState(0);
     const [habitState, setHabitState] = useState("noHabitSelected");
 
-
-    // Get current habit
+    // Get current habit: triggers every time new habit is selected
     useEffect(() => {
         if(habitSelect){
 
             // Get habit from local storage
             let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
+
+            // Set habit object
+            setHabitObject(currentHabit);
 
             // Habit has existing logs
             if(!(currentHabit.log.length===0)){
@@ -103,7 +105,7 @@ export default function TimeClockCard(props){
         if(habitSelect){
 
             // Get Selected Habit from Local Storage
-            let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
+            let currentHabit = habitObject;
 
             // Initialize related states based on the habit state
             switch (habitState){
@@ -163,7 +165,7 @@ export default function TimeClockCard(props){
      * @returns {} void
      */
     const updateCount = () =>{
-        let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
+        let currentHabit = habitObject;
         const today = new Date();
         // No logs for today yet
         if(habitState == "countHabitInactive"){
@@ -229,7 +231,7 @@ export default function TimeClockCard(props){
     const startTime = () =>{
 
         // Get Current Habit from localStorage
-        let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
+        let currentHabit = habitObject;
       
 
         // Current Habit is time based with no active logs
@@ -263,7 +265,7 @@ export default function TimeClockCard(props){
     const stopTime = () => {
 
         // Get currentHabit from localStorage
-        let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
+        let currentHabit = habitObject;
 
         // Get the logs of the currentHabit
         let habitLogs = currentHabit.log;
@@ -345,7 +347,7 @@ export default function TimeClockCard(props){
     const updateTime = () =>{
 
         // Get current habit from localStorage
-        let currentHabit = JSON.parse(localStorage.getItem(habitSelect));
+        let currentHabit = habitObject;
 
         // Get the starting time of the most recent log
         let startDate = new Date(currentHabit.log[0][0]); 
@@ -419,7 +421,7 @@ export default function TimeClockCard(props){
                 <div className = "timeClockCard">  
                     <Button className = "createNewButton" text = "+" onclick = {showNewHabit} title = "Create New Habit" />
                     <InputField name = "Habit Name" type = "select" default = "Choose habit here" state = {habitSelect} stateSetter = {setHabitSelect} options = {habitList}/>
-                    <OutputDisplay className = "timeClockMetric" text = {clock + "s"} />
+                    <OutputDisplay className = "timeClockMetric" text = {clock}  />
                     <OutputDisplay className = "timeClockDescription" text = {description}/>
                     <Button className = "cardButton" text = "Update" onclick = {updateTime} />
                     <Button className = "cardButton" text = "Stop" onclick = {stopTime}/>
