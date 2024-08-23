@@ -1,6 +1,8 @@
 # Progressivity
 React-based Web App to keep track of habits and goals.
 
+<b><u>Try it here:</u></b> https://progressivity.netlify.app/ 
+
 # Quick Overview
 Here are some screenshots taking you through the basic flow of the app. Additional details about the thinking that went behind making this app can be found in the Development and Implementation notes included in this repository.
 
